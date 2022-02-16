@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -7,7 +9,7 @@ from selenium.webdriver.common.by import By
 
 @pytest.fixture
 def driver(request):
-    wd = webdriver.Chrome("./chromedriver")
+    wd = webdriver.Chrome()
     request.addfinalizer(wd.quit)
     return wd
 
@@ -18,4 +20,3 @@ def test_login(driver):
     driver.find_element(By.NAME, "password").send_keys("admin")
     driver.find_element(By.NAME, "login").click()
     WebDriverWait(driver, 10).until(EC.title_is("My Store"))
-
