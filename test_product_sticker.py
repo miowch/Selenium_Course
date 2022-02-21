@@ -19,11 +19,10 @@ def test_product_sticker(driver):
     products = driver.find_elements(By.CSS_SELECTOR, ".content .box .product")
 
     for product in products:
-        try:
-            sticker = product.find_elements(By.CLASS_NAME, "sticker")
-            if len(sticker) != 1:
-                print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} has {len(sticker)} stickers!")
-            else:
-                EC.visibility_of(sticker)
-        except NoSuchElementException:
+        stickers = product.find_elements(By.CLASS_NAME, "sticker")
+        if len(stickers) == 0:
             print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} doesn't have a sticker.")
+        elif len(stickers) > 1:
+            print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} has {len(stickers)} stickers!")
+        else:
+            EC.visibility_of(stickers)
