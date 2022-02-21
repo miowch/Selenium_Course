@@ -16,11 +16,11 @@ def test_product_sticker(driver):
     driver.get("http://localhost/litecart/en/")
     WebDriverWait(driver, 10).until(EC.title_is("Online Store | My Store"))
 
-    products = driver.find_elements(By.CSS_SELECTOR, ".content .box [class~=product]")
+    products = driver.find_elements(By.CSS_SELECTOR, ".content .box .product")
 
     for product in products:
         try:
-            sticker = product.find_elements(By.CSS_SELECTOR, "[class~=sticker]")
+            sticker = product.find_elements(By.CLASS_NAME, "sticker")
             if len(sticker) != 1:
                 print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} has {len(sticker)} stickers!")
             else:
