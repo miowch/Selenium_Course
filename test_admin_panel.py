@@ -22,11 +22,11 @@ def test_headers_in_sidebar_menu(driver):
         menu_section.click()
         check_header(driver)
 
-        section_items = driver.find_elements(By.CLASS_NAME, "docs")
+        section_items = driver.find_elements(By.CSS_SELECTOR, "[id ^= doc-]")
 
         if section_items:
             for n in range(len(section_items)-1):
-                section_items[n].click()
+                driver.find_elements(By.CSS_SELECTOR, "[id ^= doc-]")[n].click()
                 check_header(driver)
 
 
