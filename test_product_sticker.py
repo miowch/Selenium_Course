@@ -24,5 +24,3 @@ def test_product_sticker(driver):
             print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} doesn't have a sticker.")
         elif len(stickers) > 1:
             print(f"Product {product.find_element(By.CLASS_NAME, 'name').text} has {len(stickers)} stickers!")
-        else:
-            EC.visibility_of(stickers)
