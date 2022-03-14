@@ -17,7 +17,7 @@ def test_headers_in_sidebar_menu(driver):
 
     menu_sections_number = len(driver.find_elements(By.CSS_SELECTOR, "#box-apps-menu > li"))
 
-    for i in range(menu_sections_number-1):
+    for i in range(menu_sections_number):
         menu_section = driver.find_elements(By.ID, "app-")[i]
         menu_section.click()
         check_header(driver)
@@ -25,7 +25,7 @@ def test_headers_in_sidebar_menu(driver):
         section_items = driver.find_elements(By.CSS_SELECTOR, "[id ^= doc-]")
 
         if section_items:
-            for n in range(len(section_items)-1):
+            for n in range(len(section_items)):
                 driver.find_elements(By.CSS_SELECTOR, "[id ^= doc-]")[n].click()
                 check_header(driver)
 
