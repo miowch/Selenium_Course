@@ -30,7 +30,7 @@ class TestGeoZonesSorting(CoreTestCase):
             zones_names = []
 
             for zones_row in driver.find_elements(By.CSS_SELECTOR, "#table-zones tbody > :not(.header, :last-child)"):
-                selected_zone = zones_row.find_element(By.CSS_SELECTOR, "select[name^='zones'] > option[selected='selected']")\
+                selected_zone = zones_row.find_element(By.CSS_SELECTOR, "select[name*='zone_code'] > option[selected='selected']")\
                     .get_attribute("textContent")
 
                 zones_names.append(selected_zone)
