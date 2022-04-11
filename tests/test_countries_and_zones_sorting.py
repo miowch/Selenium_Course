@@ -37,22 +37,14 @@ class TestCountriesAndZonesSorting(CoreTestCase):
         self.log_in_as_admin(driver, url)
         WebDriverWait(driver, 10).until(EC.title_is("Countries | My Store"))
 
-        countries_with_zones = []
-
-        for countries_row in driver.find_elements(By.CSS_SELECTOR, ".dataTable .row"):
-            columns_of_countries_table = driver.find_element(By.CSS_SELECTOR, ".dataTable .header")\
-                .get_attribute("innerText").split("\t")
-
-            if int(countries_row.get_attribute("innerText").split("\t")[columns_of_countries_table.index('Zones')]) > 0:
-                country_code = countries_row.get_attribute("innerText").split("\t")[columns_of_countries_table.index('Code')]
-                countries_with_zones.append(country_code)
+        countries_with_zones = self.get_countries_with_zones(driver)
 
         for country in countries_with_zones:
             driver.find_element(By.CSS_SELECTOR, f".dataTable .row a[href$='{country}']").click()
 
             zones_names = []
 
-            for zones_row in driver.find_elements(By.CSS_SELECTOR, ".dataTable .row"):
+            for zones_row in driver.find_elements(By.CSS_SELECTOR, ".dataTable tbody > :not(.header, :last-child)"):
                 columns_of_zones_table = driver.find_element(By.CSS_SELECTOR, "#table-zones .header")\
                     .get_attribute("innerText").split("\t")
 
@@ -65,3 +57,18 @@ class TestCountriesAndZonesSorting(CoreTestCase):
                 print(f"Assertion failed. Zones for country with code {country} are not sorted in alphabetical order.\n")
 
             driver.back()
+
+    @staticmethod
+    def get_countries_with_zones(driver):
+        countries_with_zones = []
+
+        for countries_row in driver.find_elements(By.CSS_SELECTOR, ".dataTable .row"):
+            columns_of_countries_table = driver.find_element(By.CSS_SELECTOR, ".dataTable .header") \
+                .get_attribute("innerText").split("\t")
+
+            if int(countries_row.get_attribute("innerText").split("\t")[columns_of_countries_table.index('Zones')]) > 0:
+                country_code = countries_row.get_attribute("innerText").split("\t")[
+                    columns_of_countries_table.index('Code')]
+                countries_with_zones.append(country_code)
+
+        return countries_with_zones
