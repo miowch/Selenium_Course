@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import pytest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -11,16 +10,6 @@ from faker import Faker
 
 
 class TestUserRegistration(CoreTestCase):
-    @pytest.fixture
-    def driver(self, request):
-        wd = webdriver.Chrome()
-        request.addfinalizer(wd.quit)
-        return wd
-
-    @pytest.fixture
-    def no_captcha(self, driver):
-        self.turn_off_captcha(driver)
-
     @pytest.fixture
     def user_data(self):
         return {

@@ -1,5 +1,3 @@
-import pytest as pytest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -8,12 +6,6 @@ from utils.core_test_case import CoreTestCase
 
 
 class TestCountriesAndZonesSorting(CoreTestCase):
-    @pytest.fixture
-    def driver(self, request):
-        wd = webdriver.Chrome()
-        request.addfinalizer(wd.quit)
-        return wd
-
     def test_countries_sorting(self, driver):
         url = "http://localhost/litecart/admin/?app=countries&doc=countries"
 

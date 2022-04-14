@@ -1,17 +1,11 @@
 import pytest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from utils.core_test_case import CoreTestCase
 
 
-class TestProductPage:
-    @pytest.fixture
-    def driver(self, request):
-        wd = webdriver.Chrome()
-        request.addfinalizer(wd.quit)
-        return wd
-
+class TestProductPage(CoreTestCase):
     @pytest.fixture
     def product_main_page(self, driver):
         self.open_main_page(driver)

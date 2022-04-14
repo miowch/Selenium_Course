@@ -1,7 +1,15 @@
 from selenium.webdriver.common.by import By
+from selenium import webdriver
+import pytest
 
 
 class CoreTestCase:
+    @pytest.fixture
+    def driver(self, request):
+        wd = webdriver.Chrome()
+        request.addfinalizer(wd.quit)
+        return wd
+
     @staticmethod
     def log_in_as_admin(driver, url):
         driver.get(url)
@@ -9,7 +17,8 @@ class CoreTestCase:
         driver.find_element(By.NAME, "password").send_keys("admin")
         driver.find_element(By.NAME, "login").click()
 
-    def turn_off_captcha(self, driver):
+    @pytest.fixture
+    def no_captcha(self, driver):
         url = "http://localhost/litecart/admin/?" \
               "app=settings&doc=security&" \
               "setting_group_key=store_info&" \
