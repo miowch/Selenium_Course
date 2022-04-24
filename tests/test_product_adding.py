@@ -9,6 +9,7 @@ from selenium.webdriver.support.select import Select
 
 class TestProductAdding(CoreTestCase):
     def test_add_product(self, driver):
+        # CATALOG
         url = "http://localhost/litecart/admin/?app=catalog&doc=catalog"
         self.log_in_as_admin(driver, url)
         WebDriverWait(driver, 10).until(EC.title_is("Catalog | My Store"))
@@ -20,30 +21,22 @@ class TestProductAdding(CoreTestCase):
         product_name = f"Test {datetime.now().strftime('%m%d%Y%H%M%S')}"
         self.fill_in_general_data(driver, product_name)
 
-        driver.find_element(By.CSS_SELECTOR, "a[href='#tab-information']").click()
-
         # INFORMATION TAB
+        driver.find_element(By.CSS_SELECTOR, "a[href='#tab-information']").click()
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".active a[href='#tab-information']")))
         self.fill_in_information_data(driver, product_name)
 
-        driver.find_element(By.CSS_SELECTOR, "a[href='#tab-prices']").click()
-
         # PRICES TAB
+        driver.find_element(By.CSS_SELECTOR, "a[href='#tab-prices']").click()
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".active a[href='#tab-prices']")))
         self.fill_in_prices_data(driver, "3.50", "5")
-
         driver.find_element(By.CSS_SELECTOR, "button[name='save']").click()
+
+        # CATALOG
         WebDriverWait(driver, 10).until(EC.title_is("Catalog | My Store"))
-
-        columns_of_catalog_table = driver.find_element(By.CSS_SELECTOR, ".dataTable .header").get_attribute("innerText").split("\t")
-
-        last_product_in_catalog = driver.find_element(By.CSS_SELECTOR, "form[name='catalog_form'] .dataTable tbody > :nth-last-child(2)")
-        product_name_in_catalog = last_product_in_catalog.get_attribute("innerText").split("\t")[columns_of_catalog_table.index('Name')]
-
-        assert product_name_in_catalog == f" {product_name}", \
-            f"Product name in catalog differs from the expected '{product_name}'."
+        self.check_product_name(driver, product_name)
 
     @staticmethod
     def fill_in_general_data(driver, product_name):
@@ -80,3 +73,16 @@ class TestProductAdding(CoreTestCase):
             driver.find_element(By.CSS_SELECTOR, "select[name='purchase_price_currency_code']"))
         select_price_currency.select_by_value("EUR")
         driver.find_element(By.CSS_SELECTOR, "input[name='prices[EUR]']").send_keys(f"{price}")
+
+    @staticmethod
+    def check_product_name(driver, product_name):
+        columns_of_catalog_table = driver.find_element(By.CSS_SELECTOR, ".dataTable .header").get_attribute(
+            "innerText").split("\t")
+
+        last_product_in_catalog = driver.find_element(By.CSS_SELECTOR,
+                                                      "form[name='catalog_form'] .dataTable tbody > :nth-last-child(2)")
+        product_name_in_catalog = last_product_in_catalog.get_attribute("innerText").split("\t")[
+            columns_of_catalog_table.index('Name')]
+
+        assert product_name_in_catalog == f" {product_name}", \
+            f"Product name in catalog differs from the expected '{product_name}'."
