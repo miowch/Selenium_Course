@@ -115,8 +115,3 @@ class TestProductPage(CoreTestCase):
     def is_red(color):
         rgba = eval(color[color.find("(") + 1:color.find(")")])
         return True if rgba[1] == 0 and rgba[2] == 0 else False
-
-    @staticmethod
-    def open_main_page(driver):
-        driver.get("http://localhost/litecart/en/")
-        WebDriverWait(driver, 10).until(EC.title_is("Online Store | My Store"))

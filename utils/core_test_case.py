@@ -1,6 +1,8 @@
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import pytest
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class CoreTestCase:
@@ -16,6 +18,11 @@ class CoreTestCase:
         driver.find_element(By.NAME, "username").send_keys("admin")
         driver.find_element(By.NAME, "password").send_keys("admin")
         driver.find_element(By.NAME, "login").click()
+
+    @staticmethod
+    def open_main_page(driver):
+        driver.get("http://localhost/litecart/en/")
+        WebDriverWait(driver, 10).until(EC.title_is("Online Store | My Store"))
 
     @pytest.fixture
     def no_captcha(self, driver):
