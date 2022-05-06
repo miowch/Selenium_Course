@@ -12,7 +12,7 @@ class TestProductCart(CoreTestCase):
 
         self.open_main_page(driver)
 
-        while i != 3:
+        while i < 3:
             driver.find_element(By.CSS_SELECTOR, "#box-most-popular .products > :first-child > .link").click()
 
             initial_cart_counter_value = driver.find_element(By.CSS_SELECTOR, "#header #cart .quantity").text
